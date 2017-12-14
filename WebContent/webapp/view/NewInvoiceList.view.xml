@@ -1,0 +1,85 @@
+<mvc:View
+	controllerName="sap.ui.demo.wt.controller.NewInvoiceList"
+	xmlns="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:model="sap.ui.model"
+	xmlns:wt="sap.ui.demo.wt.control"
+	xmlns:mvc="sap.ui.core.mvc">
+	<Table
+		id="invoiceList"
+		class="sapUiResponsiveMargin"
+		width="auto"
+		items="{
+			path : 'invoice>/Invoices',
+			sorter : {
+				path : 'ShipperName',
+				group : true
+			}
+		}">
+		<headerToolbar>
+			<Toolbar> 
+				<Title text="{i18n>invoiceListTitle}"/>
+				<ToolbarSpacer/>
+				<Button 
+					icon="sap-icon://download"
+					press="onDataExport"/>
+				<SearchField width="50%" search="onFilterInvoices" selectOnFocus="false"/>
+			</Toolbar>
+		</headerToolbar>
+		<columns>
+			<Column
+				hAlign="End"
+				minScreenWidth="Small"
+				demandPopin="true"
+				width="4em">
+				<Text text="{i18n>columnQuantity}"/>
+			</Column>
+			<Column>
+				<Text text="{i18n>columnName}"/>
+			</Column>
+			<Column
+				minScreenWidth="Small"
+				demandPopin="true">
+				<Text text="{i18n>columnStatus}"/>
+			</Column>
+			<Column
+				minScreenWidth="Tablet"
+				demandPopin="false">
+				<Text text="{i18n>columnSupplier}"/>
+			</Column>
+			<Column>
+				<Text text="{i18n>columnRatingStatus}"/>
+			</Column>			
+			<Column
+				hAlign="End">
+				<Text text="{i18n>columnPrice}"/>
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem
+				type="Navigation"
+				press="onPress">
+				<cells>
+					<ObjectNumber number="{invoice>Quantity}" emphasized="false"/>
+					<ObjectIdentifier title="{invoice>ProductName}"/>
+					<Text text="{
+						path: 'invoice>Status',
+						formatter: '.formatter.statusText'
+					}"/>
+					<Text text="{invoice>ShipperName}"/>
+					<Text text="{i18n>RatingStatusChang}" />
+					<ObjectNumber
+						number="{
+							parts: [{path: 'invoice>ExtendedPrice'}, {path: 'view>/currency'}],
+							type: 'sap.ui.model.type.Currency',
+							formatOptions: {
+								showMeasure: false
+							}
+						}"
+						unit="{view>/currency}"
+						state="{= ${invoice>ExtendedPrice} > 50 ? 'Error' : 'Success' }"/>
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+</mvc:View>
